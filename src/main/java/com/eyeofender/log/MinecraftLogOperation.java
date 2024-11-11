@@ -28,10 +28,10 @@ public class MinecraftLogOperation {
 
 
         NativeQueryBuilder queryBuilder = new NativeQueryBuilder()
-                .withQuery(Query.findAll())
+                .withQuery(QueryBuilders.matchAll().build()._toQuery())
                 .withSourceFilter(new FetchSourceFilter(new String[]{"message_content"}, null))
                 .withPageable(PageRequest.of(page, size))
-                .withSort(Sort.by(Sort.Order.asc("@timestamp"), Sort.Order.asc("_id")));
+                .withSort(Sort.by(Sort.Order.asc("timestamp")));
 
         if(searchAfterValues != null) {
             queryBuilder.withSearchAfter(List.of(searchAfterValues));
