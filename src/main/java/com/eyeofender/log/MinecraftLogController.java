@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/log/minecraft")
+@RequestMapping("/log")
 public class MinecraftLogController {
 
-    private final MinecraftLogOperation minecraftLogOperation;
+    private final MinecraftLogService minecraftLogService;
 
-    public MinecraftLogController(MinecraftLogOperation minecraftLogOperation) {
-        this.minecraftLogOperation = minecraftLogOperation;
+    public MinecraftLogController(MinecraftLogService minecraftLogOperation) {
+        this.minecraftLogService = minecraftLogOperation;
     }
 
     @GetMapping("/server")
@@ -28,8 +28,7 @@ public class MinecraftLogController {
             ) {
         Object[] searchAfterArray = searchAfterValues != null ? searchAfterValues.toArray() : null;
 
-        SearchHits<MinecraftLog> searchHits = minecraftLogOperation.searchByMessageContent(indexName, page, size, searchAfterArray);
-
+        SearchHits<MinecraftLog> searchHits = minecraftLogService.searchByMessageContent(indexName, page, size, searchAfterArray);
 
 
         return ResponseUtil.buildResponse(
