@@ -1,6 +1,8 @@
 package com.eyeofender.log;
 
 public record MinecraftLogRequest(
-        String indexName
+        String indexName,
+        int page,
+        int size
 ) {
 }

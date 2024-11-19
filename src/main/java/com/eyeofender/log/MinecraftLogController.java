@@ -1,6 +1,7 @@
 package com.eyeofender.log;
 
 import com.eyeofender.response.GenericResponse;
+import com.eyeofender.search.ElasticsearchService;
 import com.eyeofender.utils.ResponseUtil;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.http.HttpStatus;
@@ -10,17 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/log")
 public class MinecraftLogController {
 
     private final MinecraftLogService minecraftLogService;
+    private final ElasticsearchService elasticsearchService;
 
-    public MinecraftLogController(MinecraftLogService minecraftLogOperation) {
+    public MinecraftLogController(MinecraftLogService minecraftLogOperation, ElasticsearchService elasticsearchService) {
         this.minecraftLogService = minecraftLogOperation;
+        this.elasticsearchService = elasticsearchService;
     }
 
-    @GetMapping("/server")
-    public ResponseEntity<GenericResponse> getServerLog(
+    @GetMapping("/search")
+    public ResponseEntity<GenericResponse> getServerByLog(
             @RequestParam String indexName,
             @RequestParam int page,
             @RequestParam int size,
@@ -36,6 +38,11 @@ public class MinecraftLogController {
                 HttpStatus.OK,
                 searchHits.getSearchHits()
         );
+    }
+    @GetMapping("/search/index")
+    public ResponseEntity<GenericResponse> getAllIndexNames() {
+        List<String> indexNames = elasticsearchService.getIndexNames();
 
+        return ResponseUtil.buildResponse("인덱스 조회 완료", HttpStatus.OK, indexNames);
     }
 }

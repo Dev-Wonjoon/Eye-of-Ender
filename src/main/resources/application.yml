@@ -1,4 +1,9 @@
+server:
+  servlet:
+    context-path: /api/log
+
 spring:
+
   elasticsearch:
     uris: ${ELASTIC_URL}
 
